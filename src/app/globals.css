@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+::selection { background: #F6D9C6; }
+
+body {
+  font-family: 'Hanken Grotesk', system-ui, sans-serif;
+  background: #FAF7F2;
+  color: #2B2520;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+@keyframes fadeUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: none; opacity: 1; }
+}
+
+.fade-up { animation: fadeUp 0.3s ease forwards; }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #E0D7CB; border-radius: 8px; border: 2px solid #FAF7F2; }
+
+input, select, textarea, button { font-family: inherit; }
+input:focus, textarea:focus { outline: none; }
