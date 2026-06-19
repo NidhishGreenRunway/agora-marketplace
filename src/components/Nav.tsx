@@ -5,6 +5,8 @@ import { Screen } from '@/lib/data';
 
 interface NavProps {
   screen: Screen;
+  user: { name: string; email: string };
+  initials: string;
   onBrowse: () => void;
   onSeller: () => void;
   onBuyer: () => void;
@@ -12,7 +14,7 @@ interface NavProps {
   onLogout: () => void;
 }
 
-export default function Nav({ screen, onBrowse, onSeller, onBuyer, onListAgent, onLogout }: NavProps) {
+export default function Nav({ screen, user, initials, onBrowse, onSeller, onBuyer, onListAgent, onLogout }: NavProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -93,7 +95,7 @@ export default function Nav({ screen, onBrowse, onSeller, onBuyer, onListAgent, 
               outlineOffset: 2,
             }}
           >
-            JD
+            {initials}
           </div>
 
           {menuOpen && (
@@ -105,8 +107,8 @@ export default function Nav({ screen, onBrowse, onSeller, onBuyer, onListAgent, 
             }}>
               {/* User info */}
               <div style={{ padding: '14px 16px', borderBottom: '1px solid #F1EBE2' }}>
-                <div style={{ fontWeight: 700, fontSize: 14 }}>Jordan Diaz</div>
-                <div style={{ fontSize: 12.5, color: '#A89E91', marginTop: 2 }}>jordan@acme.com</div>
+                <div style={{ fontWeight: 700, fontSize: 14 }}>{user.name}</div>
+                <div style={{ fontSize: 12.5, color: '#A89E91', marginTop: 2 }}>{user.email}</div>
               </div>
 
               {/* Menu items */}

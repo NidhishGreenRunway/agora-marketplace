@@ -9,43 +9,28 @@ import Onboarding from '@/components/Onboarding';
 import Checkout from '@/components/Checkout';
 import SellerDashboard from '@/components/SellerDashboard';
 import BuyerDashboard from '@/components/BuyerDashboard';
+import Login from '@/components/Login';
+
+interface User { name: string; email: string; }
 
 export default function Home() {
+  const [user, setUser] = useState<User | null>({ name: 'Jordan Diaz', email: 'jordan@acme.com' });
   const [screen, setScreen] = useState<Screen>('browse');
   const [selectedId, setSelectedId] = useState('aria');
   const [plan, setPlan] = useState<Plan>('monthly');
-  const [loggedOut, setLoggedOut] = useState(false);
 
-  const go = (s: Screen) => {
-    setScreen(s);
-    window.scrollTo({ top: 0, behavior: 'instant' });
-  };
-
+  const go = (s: Screen) => { setScreen(s); window.scrollTo({ top: 0, behavior: 'instant' }); };
   const openAgent = (id: string) => { setSelectedId(id); go('listing'); };
   const startCheckout = (p: Plan) => { setPlan(p); go('checkout'); };
   const finishOnboarding = (role: Role) => { go(role === 'seller' ? 'seller' : 'buyer'); };
-  const handleLogout = () => { setLoggedOut(true); window.scrollTo({ top: 0, behavior: 'instant' }); };
-  const handleLogin = () => { setLoggedOut(false); go('browse'); };
+  const handleLogout = () => { setUser(null); window.scrollTo({ top: 0, behavior: 'instant' }); };
+  const handleLogin = (name: string, email: string) => { setUser({ name, email }); go('browse'); };
 
-  if (loggedOut) {
-    return (
-      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 20 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 9, marginBottom: 8 }}>
-          <div style={{ width: 32, height: 32, borderRadius: 9, background: '#DD6A33', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: 18 }}>A</div>
-          <span style={{ fontWeight: 800, fontSize: 22, letterSpacing: '-0.02em' }}>Agora</span>
-        </div>
-        <div style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.02em' }}>You've been signed out</div>
-        <p style={{ color: '#756B61', fontSize: 16, margin: 0 }}>Thanks for using Agora. See you next time.</p>
-        <button
-          onClick={handleLogin}
-          style={{ marginTop: 8, background: '#DD6A33', color: '#fff', border: 'none', borderRadius: 12, padding: '13px 32px', fontWeight: 700, fontSize: 15, cursor: 'pointer' }}
-        >
-          Sign back in
-        </button>
-      </div>
-    );
+  if (!user) {
+    return <Login onLogin={handleLogin} />;
   }
 
+  const initials = user.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
   const showNav = screen !== 'onboarding';
 
   return (
@@ -53,6 +38,8 @@ export default function Home() {
       {showNav && (
         <Nav
           screen={screen}
+          user={user}
+          initials={initials}
           onBrowse={() => go('browse')}
           onSeller={() => go('seller')}
           onBuyer={() => go('buyer')}
